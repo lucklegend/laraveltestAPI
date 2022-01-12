@@ -29,6 +29,20 @@ class MyMail extends Mailable
      */
     public function build()
     {
+        $headerData = [
+            'category' => 'category',
+            'unique_args' => [
+                'variable_1' => 'abc'
+            ]
+        ];
+
+        $header = $this->asString($headerData);
+
+        $this->withSwiftMessage(function ($message) use ($header) {
+            $message->getHeaders()
+                ->addTextHeader('X-SMTPAPI', $header);
+        });
+        
         return $this->subject('Send Email with Attached Excel file')
             ->view('ibventur.mail.email')
             ->attach(storage_path('app/').$this->details['file']);
