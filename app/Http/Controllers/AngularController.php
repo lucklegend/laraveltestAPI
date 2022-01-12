@@ -65,6 +65,9 @@ class AngularController extends Controller
             $data['email_message'] = 'Sadly, a client had a lower than 10 rating kindly check his/her form.';
             $data['message'] = "Thanks for sending information about your company. Unfortunately, it seems that this company does not meet “Iberian 3 Ventures” investment criteria. Regardless, we will take a second look in detail and send you an email";
         }
+        if(is_null($data['total_score'])){
+            $data['message'] = "No data found";
+        }
         //send the message to the email.
         $email = $request->email;
 
