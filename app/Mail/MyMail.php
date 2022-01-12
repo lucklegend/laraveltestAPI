@@ -33,4 +33,19 @@ class MyMail extends Mailable
             ->view('ibventur.mail.email')
             ->attach(storage_path('app/').$this->details['file']);
     }
+
+    private function asJSON($data)
+    {
+        $json = json_encode($data);
+        $json = preg_replace('/(["\]}])([,:])(["\[{])/', '$1$2 $3', $json);
+
+        return $json;
+    }
+
+    private function asString($data)
+    {
+        $json = $this->asJSON($data);
+
+        return wordwrap($json, 76, "\n   ");
+    }
 }
