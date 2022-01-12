@@ -67,6 +67,7 @@ class AngularController extends Controller
         }
         if(is_null($data['total_score'])){
             $data['message'] = "No data found";
+            return ['message' => $data['message']];
         }
         //send the message to the email.
         $email = $request->email;
