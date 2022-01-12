@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Mail;
 class AngularController extends Controller
 {
     //
+    private $excel;
+    
+    public function __construct(Excel $excel)
+    {
+        $this->excel = $excel;
+    }
+
     public function review( Request $request){
         //check the status
         $data = [];
