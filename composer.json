@@ -19,7 +19,8 @@
         "symfony/polyfill-ctype": "~1.23.0",
         "symfony/polyfill-iconv": "~1.23.0",
         "symfony/polyfill-mbstring": "~1.23.1",
-        "symfony/polyfill-php80": "~1.23.1"
+        "symfony/polyfill-php80": "~1.23.1",
+        "sendgrid/sendgrid": "~7"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

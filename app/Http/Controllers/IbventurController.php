@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use App\Mail\MyMail;
 use Illuminate\Support\Facades\Mail;
 
+require 'vendor/autoload.php';
+
 class IbventurController extends Controller
 {
     private $excel;
@@ -120,18 +122,39 @@ class IbventurController extends Controller
         $this->excel->store(new FormExport($request->email), 'requestform-'.$lastID->id.'.xlsx', 'local', Excel::XLSX);
         // return Excel::store(new FormExport($request->email), 'requestform.xlsx');
 
-        $details = [
-            'email'=> 'luis@ibventur.es',
-            'cc'=>'lucklegend@gmail.com',
-            'title' => 'A from was submitted by '.$request->email,
-            'body' => $data['email_message'],
-            'file' => 'requestform-' . $lastID->id . '.xlsx',
-        ];
+        // $details = [
+        //     'email'=> 'luis@ibventur.es',
+        //     'cc'=>'lucklegend@gmail.com',
+        //     'title' => 'A from was submitted by '.$request->email,
+        //     'body' => $data['email_message'],
+        //     'file' => 'requestform-' . $lastID->id . '.xlsx',
+        // ];
 
 
-        Mail::to($details["email"])
-            ->cc($details['cc'])
-            ->send(new MyMail($details));
+        // Mail::to($details["email"])
+        //     ->cc($details['cc'])
+        //     ->send(new MyMail($details));
+
+        $email = new \SendGrid\Mail\Mail();
+        $email->setFrom("test@example.com",
+            "Example User"
+        );
+        $email->setSubject("Sending with SendGrid is Fun");
+        $email->addTo("test@example.com", "Example User");
+        $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
+        $email->addContent(
+            "text/html",
+            "<strong>and easy to do anywhere, even with PHP</strong>"
+        );
+        $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
+        try {
+            $response = $sendgrid->send($email);
+            print $response->statusCode() . "\n";
+            print_r($response->headers());
+            print $response->body() . "\n";
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
 
         return view('ibventur.review', ['data' => $data]);
         // return view('ibventur.export.export', ['data'=>$data]);
